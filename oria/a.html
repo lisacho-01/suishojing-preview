@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ORIA | Preserved A - Diagnosis Studio</title>
+  <link rel="stylesheet" href="./oria-preserved-2026-07-09.css">
+  <style>
+    .hero-a {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(340px, 1.1fr);
+      gap: clamp(26px, 6vw, 70px);
+      align-items: center;
+    }
+
+    .phone-panel {
+      display: grid;
+      gap: 18px;
+      max-width: 430px;
+      margin-left: auto;
+      border: 1px solid rgba(47, 42, 37, 0.18);
+      border-radius: 30px;
+      padding: 18px;
+      background: linear-gradient(180deg, rgba(251, 247, 239, 0.88), rgba(232, 223, 210, 0.42));
+      box-shadow: var(--shadow);
+    }
+
+    .phone-top {
+      display: grid;
+      grid-template-columns: 30px 1fr 30px;
+      align-items: center;
+      color: var(--sub);
+      font-size: 18px;
+    }
+
+    .phone-logo {
+      justify-self: center;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 15px;
+      letter-spacing: 0.38em;
+    }
+
+    .phone-hero {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .phone-hero .image-frame {
+      aspect-ratio: 1 / 1.18;
+      border-radius: 18px;
+    }
+
+    .phone-hero img {
+      object-position: 50% 48%;
+    }
+
+    .ritual-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      color: var(--sub);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .ritual-steps span::before {
+      display: block;
+      width: 34px;
+      height: 34px;
+      margin: 0 auto 7px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: rgba(251, 247, 239, 0.62);
+      content: "";
+    }
+
+    .featured-mini {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .mini-card {
+      display: grid;
+      gap: 7px;
+      color: var(--sub);
+      font-size: 11px;
+    }
+
+    .mini-card .image-frame {
+      aspect-ratio: 1 / 1;
+    }
+
+    .mini-card:nth-child(1) img { object-position: 48% 52%; }
+    .mini-card:nth-child(2) img { object-position: 74% 50%; }
+    .mini-card:nth-child(3) img { object-position: 92% 55%; }
+
+    .talisman-strip {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 16px;
+      align-items: end;
+      margin-top: 34px;
+      padding-top: 28px;
+      border-top: 1px solid var(--line);
+    }
+
+    .talisman-strip .image-frame {
+      aspect-ratio: 16 / 9;
+    }
+
+    .talisman-strip img {
+      object-position: 85% 48%;
+    }
+
+    @media (max-width: 860px) {
+      .hero-a,
+      .phone-hero,
+      .talisman-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .phone-panel {
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body data-page="a">
+  <nav class="preserved-nav" aria-label="Preserved homepage versions">
+    <a href="./index.html">Index</a>
+    <a href="./a.html" aria-current="page">A Diagnosis Studio</a>
+    <a href="./b.html">B Talisman Entry</a>
+    <a href="./c.html">C Quiet Catalogue</a>
+  </nav>
+
+  <header class="site-header">
+    <button class="hamburger" aria-label="Menu"><span></span></button>
+    <a class="brand" href="#">ORIA<small>Your quiet talisman</small></a>
+    <button class="bag" aria-label="Cart">□</button>
+  </header>
+
+  <main>
+    <section class="shell hero-a">
+      <div class="reveal">
+        <p class="eyebrow">Three small questions</p>
+        <h1>今の気分に、<br>石を選ぶ。</h1>
+        <p class="lead">天然石の意味や色の印象から、いま身につけたい一本を静かに見つけます。</p>
+        <div class="actions">
+          <a class="btn primary" href="#diagnosis">診断をはじめる</a>
+          <a class="btn" href="#featured">商品を見る</a>
+        </div>
+        <p class="microcopy">Opening Gift｜初回のお買い物に使えるクーポンを診断後にお届けします。</p>
+      </div>
+
+      <div class="phone-panel reveal" aria-label="ORIA mobile homepage concept">
+        <div class="phone-top">
+          <span>☰</span>
+          <span class="phone-logo">ORIA</span>
+          <span>□</span>
+        </div>
+        <div class="phone-hero">
+          <div>
+            <p class="eyebrow">Start here</p>
+            <h3>3つの質問で、今のテーマを見つける。</h3>
+            <a class="btn primary slim" href="#diagnosis">Start</a>
+          </div>
+          <div class="image-frame">
+            <img src="../assets/brand/name-validation/2026-07-08-oria-brand-visual-test-v0-1.png" alt="ORIA bracelet visual reference">
+          </div>
+        </div>
+        <div class="ritual-steps" aria-label="Steps">
+          <span>Diagnosis</span>
+          <span>Recommend</span>
+          <span>Ritual</span>
+        </div>
+        <div id="featured" class="featured-mini">
+          <a class="mini-card" href="#">
+            <div class="image-frame"><img src="../assets/brand/name-validation/2026-07-08-oria-brand-visual-test-v0-1.png" alt=""></div>
+            <span>Abundance<br>¥12,800</span>
+          </a>
+          <a class="mini-card" href="#">
+            <div class="image-frame"><img src="../assets/brand/name-validation/2026-07-08-oria-brand-visual-test-v0-1.png" alt=""></div>
+            <span>Boundary<br>¥8,800</span>
+          </a>
+          <a class="mini-card" href="#">
+            <div class="image-frame"><img src="../assets/brand/name-validation/2026-07-08-oria-brand-visual-test-v0-1.png" alt=""></div>
+            <span>Softness<br>¥10,800</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="diagnosis" class="shell">
+      <div class="quiz reveal">
+        <div class="quiz-row">
+          <h2>小さな診断</h2>
+          <p class="lead">答えはあとから変わってもかまいません。今日の直感だけで選んでください。</p>
+        </div>
+        <div class="quiz-row">
+          <h3>今、いちばん惹かれるテーマは？</h3>
+          <div class="choice-grid">
+            <button class="choice">仕事・キャリア</button>
+            <button class="choice">お金・豊かさ</button>
+            <button class="choice">恋愛・人間関係</button>
+            <button class="choice">心の安定</button>
+          </div>
+        </div>
+        <div class="quiz-row">
+          <h3>直感で選ぶならどの色？</h3>
+          <div class="choice-grid">
+            <button class="choice">黄色・ゴールド系</button>
+            <button class="choice">透明・ホワイト系</button>
+            <button class="choice">ブラック・スモーキー系</button>
+            <button class="choice">グリーン系</button>
+          </div>
+        </div>
+        <p class="result-note" aria-live="polite">診断が完了しました。結果と Opening Gift は LINE または Email で受け取れます。</p>
+      </div>
+    </section>
+
+    <section class="shell">
+      <div class="talisman-strip reveal">
+        <div class="image-frame">
+          <img src="../assets/brand/name-validation/2026-07-08-oria-brand-visual-test-v0-1.png" alt="ORIA symbolic talisman reference">
+        </div>
+        <div>
+          <p class="eyebrow">Not a promise</p>
+          <h2>お守りのように、日常へ。</h2>
+          <p class="lead">石の意味は、結果を約束するものではありません。色、質感、古くからの象徴性を、今日の自分に戻るための小さな合図として。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <strong>ORIA</strong>
+    Natural-stone accessories selected in Japan. This preserved page keeps the middle ORIA mobile direction as the base, with talisman cues from the right reference panel.
+  </footer>
+
+  <script src="./oria-preserved-2026-07-09.js"></script>
+</body>
+</html>
