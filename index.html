@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Suishojing | AI Crystal Diagnosis</title>
+  <style>
+    :root {
+      --ink: #1d2320;
+      --muted: #65716a;
+      --paper: #fbfaf6;
+      --panel: #ffffff;
+      --line: #ddd8cc;
+      --moss: #2f5d50;
+      --moss-dark: #203f37;
+      --amber: #c79448;
+      --rose: #b86f72;
+      --stone: #e8e2d6;
+      --shadow: 0 18px 45px rgba(29, 35, 32, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Inter", "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .site-header {
+      position: fixed;
+      z-index: 20;
+      top: 0;
+      right: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+      padding: 0 clamp(20px, 4vw, 56px);
+      background: rgba(251, 250, 246, 0.82);
+      border-bottom: 1px solid rgba(221, 216, 204, 0.72);
+      backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: grid;
+      gap: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 24px;
+      letter-spacing: 0;
+    }
+
+    .brand span {
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav-cta,
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .nav-cta {
+      padding: 0 18px;
+      color: #fff;
+      background: var(--moss);
+    }
+
+    .hero {
+      min-height: 92vh;
+      display: grid;
+      align-items: end;
+      padding: 108px clamp(20px, 5vw, 72px) 52px;
+      background:
+        linear-gradient(90deg, rgba(251, 250, 246, 0.96) 0%, rgba(251, 250, 246, 0.82) 42%, rgba(251, 250, 246, 0.22) 100%),
+        url("https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=1800&q=82") center right / cover;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 620px) minmax(280px, 430px);
+      gap: clamp(28px, 7vw, 96px);
+      align-items: end;
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--moss);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 590px;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(48px, 7vw, 88px);
+      font-weight: 500;
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+
+    .hero-copy {
+      max-width: 560px;
+      margin: 24px 0 0;
+      color: #3f4843;
+      font-size: clamp(17px, 2vw, 22px);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .button {
+      padding: 0 24px;
+    }
+
+    .button.primary {
+      color: #fff;
+      background: var(--moss);
+      box-shadow: 0 14px 32px rgba(47, 93, 80, 0.26);
+    }
+
+    .button.secondary {
+      color: var(--moss-dark);
+      background: rgba(255, 255, 255, 0.74);
+      border-color: var(--line);
+    }
+
+    .hero-note {
+      display: grid;
+      gap: 8px;
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .proof-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .proof-row span,
+    .theme-chip {
+      border: 1px solid rgba(47, 93, 80, 0.2);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.72);
+      color: #3e5d53;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .diagnosis-panel {
+      padding: 24px;
+      border: 1px solid rgba(221, 216, 204, 0.88);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .diagnosis-panel h2 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.25;
+    }
+
+    .diagnosis-panel p {
+      margin: 8px 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .theme-button {
+      min-height: 56px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .theme-button:hover {
+      border-color: var(--moss);
+      color: var(--moss-dark);
+    }
+
+    .section {
+      padding: clamp(56px, 8vw, 98px) clamp(20px, 5vw, 72px);
+    }
+
+    .section-inner {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .section-heading h2 {
+      max-width: 660px;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 500;
+      line-height: 1.05;
+    }
+
+    .section-heading p {
+      max-width: 420px;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .step {
+      min-height: 190px;
+      padding: 28px;
+      border-right: 1px solid var(--line);
+    }
+
+    .step:last-child {
+      border-right: 0;
+    }
+
+    .step strong {
+      display: block;
+      color: var(--amber);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 34px;
+      font-weight: 500;
+    }
+
+    .step h3 {
+      margin: 22px 0 8px;
+      font-size: 20px;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .collection-band {
+      background: #ece8de;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .product {
+      overflow: hidden;
+      border: 1px solid rgba(221, 216, 204, 0.9);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .product-media {
+      min-height: 240px;
+      background:
+        linear-gradient(135deg, rgba(47, 93, 80, 0.12), rgba(199, 148, 72, 0.2)),
+        var(--image) center / cover;
+    }
+
+    .product-body {
+      display: grid;
+      gap: 10px;
+      padding: 18px;
+    }
+
+    .product-body h3 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 25px;
+      font-weight: 500;
+    }
+
+    .product-body p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .product-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding-top: 6px;
+      color: var(--moss-dark);
+      font-weight: 800;
+    }
+
+    .lead-band {
+      background: var(--moss-dark);
+      color: #fff;
+    }
+
+    .lead-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(300px, 430px);
+      gap: clamp(28px, 7vw, 92px);
+      align-items: center;
+    }
+
+    .lead-layout h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(34px, 5vw, 58px);
+      font-weight: 500;
+      line-height: 1.05;
+    }
+
+    .lead-layout p {
+      max-width: 580px;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 17px;
+    }
+
+    .signup {
+      padding: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .signup label {
+      display: block;
+      margin-bottom: 8px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .signup input {
+      width: 100%;
+      height: 48px;
+      padding: 0 14px;
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.94);
+      color: var(--ink);
+      font: inherit;
+    }
+
+    .signup .button {
+      width: 100%;
+      margin-top: 12px;
+      color: var(--ink);
+      background: #f2d9a8;
+    }
+
+    .consent {
+      margin-top: 12px;
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 28px clamp(20px, 5vw, 72px);
+      background: #151916;
+      color: rgba(255, 255, 255, 0.64);
+      font-size: 13px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    @media (max-width: 900px) {
+      .nav a:not(.nav-cta) {
+        display: none;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-top: 96px;
+        background:
+          linear-gradient(180deg, rgba(251, 250, 246, 0.96) 0%, rgba(251, 250, 246, 0.84) 52%, rgba(251, 250, 246, 0.38) 100%),
+          url("https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=1200&q=82") center top / cover;
+      }
+
+      .hero-inner,
+      .lead-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .diagnosis-panel {
+        margin-top: 22px;
+      }
+
+      .section-heading {
+        display: grid;
+      }
+
+      .steps,
+      .products {
+        grid-template-columns: 1fr;
+      }
+
+      .step {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .step:last-child {
+        border-bottom: 0;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .site-header {
+        height: 62px;
+      }
+
+      .brand {
+        font-size: 20px;
+      }
+
+      .nav-cta {
+        min-height: 40px;
+        padding: 0 12px;
+        font-size: 13px;
+      }
+
+      .hero-actions {
+        display: grid;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .theme-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-inner {
+        display: grid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#">
+      Suishojing
+      <span>Crystal Studio</span>
+    </a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#diagnosis">Diagnosis</a>
+      <a href="#collection">Collection</a>
+      <a href="#gift">Opening Gift</a>
+      <a class="nav-cta" href="#diagnosis">診断</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="diagnosis">
+      <div class="hero-inner">
+        <div>
+          <p class="eyebrow">AI Crystal Diagnosis</p>
+          <h1>Suishojing</h1>
+          <p class="hero-copy">あなたの今のテーマに合わせて、天然石ブレスレットを選びます。</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#themes">診断をはじめる</a>
+            <a class="button secondary" href="#collection">コレクションを見る</a>
+          </div>
+          <div class="hero-note">
+            <span>OPENING GIFT｜初回限定 ¥1,500 OFF</span>
+            <span>診断後、メールまたは LINE でギフトコードをお届けします。</span>
+          </div>
+          <div class="proof-row" aria-label="Brand highlights">
+            <span>天然石セレクト</span>
+            <span>16cm / 17cm</span>
+            <span>Japan domestic launch</span>
+          </div>
+        </div>
+
+        <aside class="diagnosis-panel" id="themes" aria-label="Diagnosis theme chooser">
+          <h2>今、いちばん整えたいテーマは？</h2>
+          <p>ひとつ選ぶと、AI 診断でおすすめの石とブレスレットを提案します。</p>
+          <div class="theme-grid">
+            <button class="theme-button">金運</button>
+            <button class="theme-button">仕事</button>
+            <button class="theme-button">恋愛</button>
+            <button class="theme-button">守護</button>
+            <button class="theme-button">癒し</button>
+            <button class="theme-button">自信</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-inner">
+        <div class="section-heading">
+          <h2>診断から、あなたの一本へ。</h2>
+          <p>Suishojing は、気分や願いをそのまま商品棚に押し込むのではなく、テーマ・石の意味・サイズを合わせて提案します。</p>
+        </div>
+        <div class="steps">
+          <article class="step">
+            <strong>01</strong>
+            <h3>テーマを選ぶ</h3>
+            <p>金運、仕事、恋愛、守護、癒し、自信から今の状態に近いものを選びます。</p>
+          </article>
+          <article class="step">
+            <strong>02</strong>
+            <h3>AI が診断</h3>
+            <p>回答をもとに、天然石の組み合わせとおすすめサイズを整理します。</p>
+          </article>
+          <article class="step">
+            <strong>03</strong>
+            <h3>ギフトを受け取る</h3>
+            <p>おすすめブレスレットと Opening Gift コードをメールまたは LINE にお届けします。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section collection-band" id="collection">
+      <div class="section-inner">
+        <div class="section-heading">
+          <h2>Launch Collection</h2>
+          <p>首発商品は Shopify に接続予定です。ここでは診断結果に紐づく商品カードの見え方を確認します。</p>
+        </div>
+        <div class="products">
+          <article class="product">
+            <div class="product-media" style="--image: url('https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=900&q=82');"></div>
+            <div class="product-body">
+              <span class="theme-chip">金運 / 落ち着き</span>
+              <h3>Quiet Fortune</h3>
+              <p>Citrine, Smoky Quartz. 静かな集中と前向きな循環のための一本。</p>
+              <div class="product-meta">
+                <span>¥14,800</span>
+                <span>16cm / 17cm</span>
+              </div>
+            </div>
+          </article>
+          <article class="product">
+            <div class="product-media" style="--image: url('https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=900&q=82');"></div>
+            <div class="product-body">
+              <span class="theme-chip">仕事 / 自信</span>
+              <h3>Clear Confidence</h3>
+              <p>Clear Quartz, Tiger Eye. 判断力と行動力を整えるための一本。</p>
+              <div class="product-meta">
+                <span>¥16,800</span>
+                <span>16cm / 17cm</span>
+              </div>
+            </div>
+          </article>
+          <article class="product">
+            <div class="product-media" style="--image: url('https://images.unsplash.com/photo-1588444837495-c6cfeb53f32d?auto=format&fit=crop&w=900&q=82');"></div>
+            <div class="product-body">
+              <span class="theme-chip">守護 / 癒し</span>
+              <h3>Gentle Guard</h3>
+              <p>Amethyst, Rose Quartz. 日常の緊張をほどき、心を守るための一本。</p>
+              <div class="product-meta">
+                <span>¥15,800</span>
+                <span>16cm / 17cm</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section lead-band" id="gift">
+      <div class="section-inner lead-layout">
+        <div>
+          <p class="eyebrow">Opening Gift</p>
+          <h2>診断結果と一緒に、初回ギフトを受け取る。</h2>
+          <p>初回限定 ¥1,500 OFF。¥14,800 以上でご利用いただけます。コードは診断完了後にお届けします。</p>
+        </div>
+        <form class="signup">
+          <label for="contact">メールアドレス</label>
+          <input id="contact" type="email" placeholder="you@example.com">
+          <button class="button" type="button">ギフトコードを受け取る</button>
+          <div class="consent">送信すると、診断結果とキャンペーン情報の受け取りに同意したものとみなされます。</div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <span>Suishojing Crystal Studio</span>
+      <span>About / Diagnosis / Collection / Contact / Privacy</span>
+    </div>
+  </footer>
+</body>
+</html>
