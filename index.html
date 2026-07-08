@@ -35,6 +35,12 @@
       background: var(--bg);
       font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Inter", system-ui, sans-serif;
       line-height: 1.55;
+      opacity: 0;
+      transition: opacity 500ms ease;
+    }
+
+    body.motion-ready {
+      opacity: 1;
     }
 
     button,
@@ -219,6 +225,7 @@
       border-radius: 24px;
       background: var(--surface);
       box-shadow: var(--shadow);
+      transform: translate3d(0, 0, 0);
     }
 
     .image-panel img {
@@ -228,6 +235,8 @@
       min-height: 410px;
       object-fit: cover;
       filter: saturate(0.82) contrast(0.98);
+      transform: scale(1.04) translate3d(0, var(--hero-shift, 0px), 0);
+      transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .mini-proof {
@@ -414,6 +423,109 @@
       border-radius: var(--radius);
       background: rgba(255, 255, 255, 0.42);
       padding: 18px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translate3d(0, 22px, 0);
+      transition:
+        opacity 760ms cubic-bezier(0.22, 1, 0.36, 1),
+        transform 760ms cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 150ms ease,
+        background 150ms ease;
+      transition-delay: var(--delay, 0ms);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .hero-copy .eyebrow,
+    .hero-copy h1,
+    .hero-copy .lead,
+    .hero-actions,
+    .coupon-note,
+    .visual-stack {
+      opacity: 0;
+      transform: translate3d(0, 18px, 0);
+    }
+
+    body.motion-ready .hero-copy .eyebrow,
+    body.motion-ready .hero-copy h1,
+    body.motion-ready .hero-copy .lead,
+    body.motion-ready .hero-actions,
+    body.motion-ready .coupon-note,
+    body.motion-ready .visual-stack {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      transition:
+        opacity 850ms cubic-bezier(0.22, 1, 0.36, 1),
+        transform 850ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    body.motion-ready .hero-copy h1 {
+      transition-delay: 80ms;
+    }
+
+    body.motion-ready .hero-copy .lead {
+      transition-delay: 150ms;
+    }
+
+    body.motion-ready .hero-actions {
+      transition-delay: 220ms;
+    }
+
+    body.motion-ready .coupon-note {
+      transition-delay: 280ms;
+    }
+
+    body.motion-ready .visual-stack {
+      transition-delay: 180ms;
+    }
+
+    .button,
+    .nav-cta,
+    .product-card img,
+    .journal-card {
+      transition:
+        transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 220ms ease,
+        opacity 220ms ease,
+        filter 220ms ease;
+    }
+
+    .button:hover,
+    .nav-cta:hover {
+      transform: translate3d(0, -2px, 0);
+      box-shadow: 0 12px 28px rgba(47, 42, 37, 0.16);
+    }
+
+    .product-card:hover img,
+    .journal-card:hover {
+      transform: scale(1.025);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 1ms !important;
+        animation-duration: 1ms !important;
+      }
+
+      body,
+      .reveal,
+      .hero-copy .eyebrow,
+      .hero-copy h1,
+      .hero-copy .lead,
+      .hero-actions,
+      .coupon-note,
+      .visual-stack {
+        opacity: 1 !important;
+        transform: none !important;
+      }
     }
 
     .card p {
@@ -816,6 +928,47 @@
   </footer>
 
   <script>
+    document.body.classList.add("motion-ready");
+
+    const revealTargets = document.querySelectorAll(".section-head, .card, .diagnosis-shell, .mini-proof .proof");
+    revealTargets.forEach((target, index) => {
+      target.classList.add("reveal");
+      target.style.setProperty("--delay", `${Math.min(180, (index % 4) * 55)}ms`);
+    });
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: "0px 0px -12% 0px", threshold: 0.12 });
+
+      revealTargets.forEach((target) => observer.observe(target));
+    } else {
+      revealTargets.forEach((target) => target.classList.add("visible"));
+    }
+
+    const heroImage = document.querySelector(".image-panel img");
+    let ticking = false;
+
+    function updateHeroMotion() {
+      const y = Math.min(36, window.scrollY * 0.045);
+      if (heroImage) {
+        heroImage.style.setProperty("--hero-shift", `${y}px`);
+      }
+      ticking = false;
+    }
+
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateHeroMotion);
+        ticking = true;
+      }
+    }, { passive: true });
+
     const answers = {};
     const progressBar = document.getElementById("progressBar");
     const result = document.getElementById("diagnosisResult");
