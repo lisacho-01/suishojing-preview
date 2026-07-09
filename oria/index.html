@@ -145,6 +145,13 @@
       content: "";
     }
 
+    .hero-mark {
+      width: 76px;
+      height: 76px;
+      margin-bottom: 18px;
+      color: rgba(167, 122, 52, 0.94);
+    }
+
     .hero {
       display: grid;
       min-height: 100svh;
@@ -227,6 +234,41 @@
       background: rgba(47, 42, 37, 0.16);
     }
 
+    .process-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(251, 248, 241, 0.18);
+    }
+
+    .process-item {
+      display: grid;
+      justify-items: center;
+      gap: 8px;
+      color: rgba(251, 248, 241, 0.78);
+      text-align: center;
+    }
+
+    .process-icon {
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border: 1px solid rgba(251, 248, 241, 0.34);
+      border-radius: 50%;
+      color: rgba(167, 122, 52, 0.96);
+      background: rgba(47, 42, 37, 0.16);
+    }
+
+    .process-item strong {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
     @media (min-width: 720px) {
       .header {
         min-height: 72px;
@@ -258,6 +300,10 @@
       .button {
         min-width: 190px;
       }
+
+      .process-item strong {
+        font-size: 11px;
+      }
     }
   </style>
 </head>
@@ -272,6 +318,13 @@
 
     <main class="hero">
       <section class="hero-inner" aria-labelledby="hero-title">
+        <svg class="hero-mark" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="36" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M29 72C18 55 20 33 40 19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="52" cy="13" r="5.5" fill="currentColor"/>
+          <circle cx="77" cy="78" r="4" fill="currentColor"/>
+          <path d="M50 42l4 8 8 4-8 4-4 8-4-8-8-4 8-4z" fill="currentColor"/>
+        </svg>
         <div class="primary-action" aria-label="Primary action">
           <a class="button button-primary" href="#diagnosis">診断をはじめる</a>
         </div>
@@ -284,6 +337,32 @@
           <span>天然石セレクト</span>
           <span>日本国内で検品</span>
           <span>Opening Gift</span>
+        </div>
+        <div class="process-strip" aria-label="Process">
+          <div class="process-item">
+            <span class="process-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20">
+                <path d="M10 2l2.3 5.7L18 10l-5.7 2.3L10 18l-2.3-5.7L2 10l5.7-2.3z" fill="currentColor"/>
+              </svg>
+            </span>
+            <strong>Diagnosis</strong>
+          </div>
+          <div class="process-item">
+            <span class="process-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20">
+                <path d="M10 2l6 8-6 8-6-8z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+              </svg>
+            </span>
+            <strong>Recommend</strong>
+          </div>
+          <div class="process-item">
+            <span class="process-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20">
+                <path d="M10 3C7 6.9 5 9.7 5 12.6A5 5 0 0 0 15 12.6C15 9.7 13 6.9 10 3z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+              </svg>
+            </span>
+            <strong>Ritual</strong>
+          </div>
         </div>
       </section>
     </main>
