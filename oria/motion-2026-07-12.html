@@ -1,0 +1,1004 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ORIA | Motion Homepage Prototype v2026-07-12</title>
+  <style>
+    :root {
+      --ivory: #f6f1e9;
+      --paper: #fcf8f2;
+      --mist: #ece3d7;
+      --sage: #8b9080;
+      --gold: #a77a34;
+      --gold-soft: #c39a58;
+      --charcoal: #2e2823;
+      --ink: #241f1a;
+      --muted: #766d63;
+      --line: rgba(46, 40, 35, 0.12);
+      --line-strong: rgba(46, 40, 35, 0.22);
+      --shadow: 0 30px 90px rgba(36, 31, 26, 0.12);
+      --radius: 16px;
+      --shell: min(1180px, 100%);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.78), transparent 28rem),
+        linear-gradient(180deg, #fbf7f0 0%, var(--ivory) 42%, #efe7dc 100%);
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
+      line-height: 1.65;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+    img { display: block; max-width: 100%; }
+
+    .top-strip {
+      display: flex;
+      min-height: 34px;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 16px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(252, 248, 242, 0.82);
+      color: var(--muted);
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: grid;
+      grid-template-columns: 40px 1fr 40px;
+      min-height: 62px;
+      align-items: center;
+      padding: 0 clamp(16px, 5vw, 56px);
+      border-bottom: 1px solid rgba(46, 40, 35, 0.08);
+      background: rgba(252, 248, 242, 0.86);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      justify-self: center;
+      font-size: clamp(22px, 6vw, 34px);
+      letter-spacing: 0.28em;
+      line-height: 1;
+    }
+
+    .icon-button {
+      display: inline-grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      border: 0;
+      background: transparent;
+      color: var(--charcoal);
+    }
+
+    .menu-lines,
+    .menu-lines::before,
+    .menu-lines::after {
+      display: block;
+      width: 18px;
+      height: 1px;
+      background: currentColor;
+      content: "";
+    }
+
+    .menu-lines::before { transform: translateY(-6px); }
+    .menu-lines::after { transform: translateY(5px); }
+
+    .bag-icon {
+      position: relative;
+      width: 17px;
+      height: 18px;
+      border: 1.4px solid currentColor;
+      border-radius: 2px 2px 5px 5px;
+    }
+
+    .bag-icon::before {
+      position: absolute;
+      left: 4px;
+      top: -7px;
+      width: 7px;
+      height: 8px;
+      border: 1.3px solid currentColor;
+      border-bottom: 0;
+      border-radius: 7px 7px 0 0;
+      content: "";
+    }
+
+    .shell {
+      width: var(--shell);
+      margin: 0 auto;
+      padding: clamp(18px, 4vw, 42px) clamp(18px, 5vw, 58px) clamp(68px, 8vw, 96px);
+    }
+
+    .hero {
+      padding-top: clamp(18px, 5vw, 34px);
+    }
+
+    .hero-frame {
+      position: relative;
+      overflow: hidden;
+      min-height: min(82svh, 880px);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      background:
+        linear-gradient(120deg, rgba(34, 29, 24, 0.14), rgba(34, 29, 24, 0.54)),
+        url("../assets/ai-visuals/C001/2026-07-07/C001-ai-visual-v3-fullscreen-ui.png") center / cover;
+    }
+
+    .hero-frame::after {
+      position: absolute;
+      inset: auto 0 0;
+      height: 44%;
+      background: linear-gradient(0deg, rgba(34, 29, 24, 0.66), transparent);
+      content: "";
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(280px, 0.68fr);
+      gap: clamp(22px, 6vw, 72px);
+      align-items: end;
+      min-height: inherit;
+      padding: clamp(26px, 7vw, 74px);
+      color: var(--paper);
+    }
+
+    .hero-left {
+      align-self: end;
+      max-width: 560px;
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      color: rgba(252, 248, 242, 0.72);
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .hero-mark {
+      width: 88px;
+      height: 88px;
+      margin-bottom: 22px;
+      color: rgba(195, 154, 88, 0.96);
+      filter: drop-shadow(0 8px 18px rgba(34, 29, 24, 0.22));
+      animation: drift 6s ease-in-out infinite;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(42px, 11vw, 88px);
+      font-weight: 400;
+      line-height: 0.98;
+      letter-spacing: 0.04em;
+    }
+
+    .hero-copy {
+      max-width: 38ch;
+      margin: 18px 0 0;
+      color: rgba(252, 248, 242, 0.82);
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+      font-size: clamp(15px, 3.8vw, 18px);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      min-height: 48px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 1px solid rgba(252, 248, 242, 0.24);
+      border-radius: 999px;
+      padding: 0 22px;
+      background: rgba(252, 248, 242, 0.08);
+      color: inherit;
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn.gold {
+      border-color: rgba(195, 154, 88, 0.78);
+      background: rgba(167, 122, 52, 0.26);
+      color: #fff4dc;
+    }
+    .btn.light {
+      border-color: rgba(252, 248, 242, 0.4);
+      background: rgba(252, 248, 242, 0.12);
+    }
+
+    .hero-signals {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 20px;
+      color: rgba(252, 248, 242, 0.72);
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .hero-signals span {
+      border: 1px solid rgba(252, 248, 242, 0.18);
+      border-radius: 999px;
+      padding: 7px 10px;
+      background: rgba(34, 29, 24, 0.18);
+    }
+
+    .hero-right {
+      align-self: center;
+      display: grid;
+      gap: 16px;
+    }
+
+    .floating-card,
+    .process-card {
+      border: 1px solid rgba(252, 248, 242, 0.18);
+      border-radius: 20px;
+      background: rgba(252, 248, 242, 0.1);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 22px 60px rgba(34, 29, 24, 0.14);
+    }
+
+    .floating-card {
+      overflow: hidden;
+      transform: translateY(-4px);
+      transition: transform 220ms ease;
+    }
+
+    .floating-card:hover { transform: translateY(-8px); }
+
+    .floating-card img {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+    }
+
+    .floating-meta {
+      display: grid;
+      gap: 4px;
+      padding: 16px 18px 18px;
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+    }
+
+    .floating-meta strong { font-size: 13px; }
+    .floating-meta span {
+      color: rgba(252, 248, 242, 0.74);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+    }
+
+    .process-card {
+      padding: 18px;
+      color: rgba(252, 248, 242, 0.9);
+    }
+
+    .process-head {
+      margin: 0 0 12px;
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(252, 248, 242, 0.68);
+    }
+
+    .process-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .process-item {
+      display: grid;
+      justify-items: center;
+      gap: 8px;
+      text-align: center;
+    }
+
+    .process-icon {
+      display: grid;
+      width: 56px;
+      height: 56px;
+      place-items: center;
+      border: 1px solid rgba(195, 154, 88, 0.86);
+      border-radius: 50%;
+      color: rgba(195, 154, 88, 0.96);
+    }
+
+    .process-item strong {
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .dots {
+      width: clamp(22px, 8vw, 60px);
+      border-top: 2px dotted rgba(195, 154, 88, 0.42);
+    }
+
+    .section {
+      padding-top: clamp(58px, 9vw, 96px);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 20px;
+      align-items: end;
+      margin-bottom: 26px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(30px, 8vw, 58px);
+      font-weight: 400;
+      line-height: 1.08;
+    }
+
+    .lead {
+      max-width: 680px;
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+      font-size: clamp(14px, 3.7vw, 18px);
+    }
+
+    .theme-map {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .theme-card,
+    .product-card,
+    .capture-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(252, 248, 242, 0.76);
+      box-shadow: 0 14px 40px rgba(36, 31, 26, 0.06);
+    }
+
+    .theme-card {
+      display: grid;
+      gap: 12px;
+      padding: 18px;
+      min-height: 160px;
+    }
+
+    .theme-icon {
+      display: grid;
+      width: 58px;
+      height: 58px;
+      place-items: center;
+      border: 1px solid rgba(167, 122, 52, 0.82);
+      border-radius: 50%;
+      color: var(--gold);
+    }
+
+    .theme-label {
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .theme-card h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 400;
+    }
+
+    .theme-card p {
+      margin: 0;
+      color: var(--muted);
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+      font-size: 13px;
+    }
+
+    .collection-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .product-card {
+      overflow: hidden;
+      display: grid;
+    }
+
+    .product-image {
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      background: var(--mist);
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 400ms ease;
+    }
+
+    .product-card:hover .product-image img {
+      transform: scale(1.04);
+    }
+
+    .product-meta {
+      display: grid;
+      gap: 4px;
+      padding: 16px 16px 18px;
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+    }
+
+    .product-meta strong { font-size: 13px; }
+    .product-meta span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .product-meta .price {
+      color: var(--charcoal);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .map-grid {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .map-panel,
+    .capture-card {
+      padding: clamp(20px, 5vw, 36px);
+    }
+
+    .map-panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(252, 248, 242, 0.62);
+    }
+
+    .map-constellation {
+      position: relative;
+      min-height: 320px;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(195, 154, 88, 0.14), transparent 24%),
+        radial-gradient(circle at 72% 42%, rgba(139, 144, 128, 0.12), transparent 28%),
+        linear-gradient(180deg, rgba(252, 248, 242, 0.82), rgba(236, 227, 215, 0.82));
+      overflow: hidden;
+    }
+
+    .constellation-line {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .node {
+      position: absolute;
+      display: grid;
+      gap: 6px;
+      justify-items: center;
+      text-align: center;
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .node-badge {
+      display: grid;
+      width: 56px;
+      height: 56px;
+      place-items: center;
+      border: 1px solid rgba(167, 122, 52, 0.72);
+      border-radius: 50%;
+      background: rgba(252, 248, 242, 0.72);
+    }
+
+    .node:nth-child(1) { top: 12%; left: 10%; }
+    .node:nth-child(2) { top: 8%; left: 64%; }
+    .node:nth-child(3) { top: 44%; left: 20%; }
+    .node:nth-child(4) { top: 48%; left: 60%; }
+    .node:nth-child(5) { top: 72%; left: 36%; }
+
+    .map-notes {
+      display: grid;
+      gap: 12px;
+    }
+
+    .map-notes article {
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+    }
+
+    .capture-card {
+      display: grid;
+      gap: 16px;
+      background:
+        linear-gradient(90deg, rgba(252, 248, 242, 0.92), rgba(252, 248, 242, 0.7)),
+        url("../assets/ai-visuals/C001/2026-07-07/C001-ai-visual-v2-preview-crop.png") right center / cover;
+    }
+
+    .capture-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .capture-row input {
+      min-height: 46px;
+      min-width: min(280px, 100%);
+      flex: 1;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0 18px;
+      background: rgba(252, 248, 242, 0.9);
+      color: var(--charcoal);
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+      font-size: 13px;
+    }
+
+    .footer {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: end;
+      padding-top: 62px;
+      color: var(--muted);
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+      font-size: 12px;
+    }
+
+    .footer-brand {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--charcoal);
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
+      font-size: 30px;
+      letter-spacing: 0.24em;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 12px 18px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 700ms ease, transform 700ms ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    [data-parallax] {
+      transition: transform 100ms linear;
+      will-change: transform;
+    }
+
+    @keyframes drift {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .hero-mark { animation: none; }
+      .reveal, .reveal.is-visible {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      .btn, .product-image img, [data-parallax] {
+        transition: none;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .hero-content,
+      .map-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .theme-map {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .section-head,
+      .footer {
+        grid-template-columns: 1fr;
+      }
+
+      .collection-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .process-row {
+        grid-template-columns: 1fr;
+      }
+
+      .dots {
+        width: 2px;
+        height: 24px;
+        border-top: 0;
+        border-left: 2px dotted rgba(195, 154, 88, 0.42);
+        justify-self: center;
+      }
+
+      .footer-links {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .hero-frame {
+        min-height: calc(100svh - 96px);
+        border-left: 0;
+        border-right: 0;
+        border-radius: 0;
+      }
+
+      .shell {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .hero {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .hero-content {
+        padding: 24px 20px 30px;
+      }
+
+      .theme-map {
+        grid-template-columns: 1fr;
+      }
+
+      .site-section-shell {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-strip">Opening Gift｜診断後に初回ギフトをお届け</div>
+
+  <header class="site-header">
+    <button class="icon-button" type="button" aria-label="Menu"><span class="menu-lines"></span></button>
+    <a class="brand" href="#">ORIA</a>
+    <button class="icon-button" type="button" aria-label="Cart"><span class="bag-icon"></span></button>
+  </header>
+
+  <main>
+    <section class="hero shell">
+      <div class="hero-frame" data-parallax="hero">
+        <div class="hero-content">
+          <div class="hero-left reveal">
+            <svg class="hero-mark" viewBox="0 0 100 100" aria-hidden="true">
+              <circle cx="50" cy="50" r="36" fill="none" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M29 72C18 55 20 33 40 19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <circle cx="52" cy="13" r="5.5" fill="currentColor"/>
+              <circle cx="77" cy="78" r="4" fill="currentColor"/>
+              <path d="M50 36l10 14-10 14-10-14z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            </svg>
+            <p class="eyebrow">AI Crystal Diagnosis</p>
+            <h1>今の気持ちに<br>静かな石を</h1>
+            <p class="hero-copy">いまのテーマに寄り添う天然石を、AI が静かに選びます。大げさな約束ではなく、日常にそっと置けるお守りのような一本へ。</p>
+            <div class="actions">
+              <a class="btn gold" href="#diagnosis">診断をはじめる</a>
+              <a class="btn light" href="#collection">Collection を見る</a>
+            </div>
+            <div class="hero-signals">
+              <span>天然石セレクト</span>
+              <span>日本国内で検品</span>
+              <span>Quiet Ritual</span>
+            </div>
+          </div>
+
+          <div class="hero-right reveal">
+            <article class="floating-card">
+              <img src="../assets/ai-visuals/C001/2026-07-07/C001-ai-visual-v3-preview-crop.png" alt="ORIA featured bracelet visual">
+              <div class="floating-meta">
+                <strong>C001｜Quiet Fortune</strong>
+                <span>Yellow Citrine · Focus · Presence</span>
+              </div>
+            </article>
+
+            <article class="process-card">
+              <p class="process-head">Diagnosis Flow</p>
+              <div class="process-row">
+                <div class="process-item">
+                  <span class="process-icon">
+                    <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+                      <path d="M10 2l2.3 5.7L18 10l-5.7 2.3L10 18l-2.3-5.7L2 10l5.7-2.3z" fill="currentColor"/>
+                    </svg>
+                  </span>
+                  <strong>Diagnosis</strong>
+                </div>
+                <span class="dots" aria-hidden="true"></span>
+                <div class="process-item">
+                  <span class="process-icon">
+                    <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+                      <path d="M10 2l6 8-6 8-6-8z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                    </svg>
+                  </span>
+                  <strong>Recommend</strong>
+                </div>
+                <span class="dots" aria-hidden="true"></span>
+                <div class="process-item">
+                  <span class="process-icon">
+                    <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+                      <path d="M10 3C7 6.9 5 9.7 5 12.6A5 5 0 0 0 15 12.6C15 9.7 13 6.9 10 3z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                    </svg>
+                  </span>
+                  <strong>Ritual</strong>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell site-section-shell">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow" style="color: var(--gold);">Theme Map</p>
+            <h2>気分と意味から<br>石の入口をひらく</h2>
+            <p class="lead">最新の symbol reference をもとに、ORIA では感情や願いを直接叫ばず、意味の輪郭から選ばせる設計に寄せます。</p>
+          </div>
+        </div>
+
+        <div class="theme-map">
+          <article class="theme-card reveal">
+            <span class="theme-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l2.6 6.4L21 11l-6.4 2.6L12 20l-2.6-6.4L3 11l6.4-2.6z" fill="currentColor"/></svg>
+            </span>
+            <span class="theme-label">Purpose</span>
+            <h3>仕事・決断・集中</h3>
+            <p>迷いを減らし、今の軸を整えたい人の入り口。</p>
+          </article>
+          <article class="theme-card reveal">
+            <span class="theme-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 3a7 7 0 1 0 0 14a7 7 0 0 1 0-14z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M18 5l1.4 2.6L22 9l-2.6 1.4L18 13l-1.4-2.6L14 9l2.6-1.4z" fill="currentColor"/></svg>
+            </span>
+            <span class="theme-label">Calm</span>
+            <h3>静けさ・休息・回復</h3>
+            <p>がんばり続ける日常に、呼吸の余白をつくるための入り口。</p>
+          </article>
+          <article class="theme-card reveal">
+            <span class="theme-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 19c4-3.5 6-6.2 6-9.2A4.2 4.2 0 0 0 9.8 8A4.2 4.2 0 0 0 6 9.8C6 12.8 8 15.5 12 19z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+            </span>
+            <span class="theme-label">Compassion</span>
+            <h3>愛情・やさしさ・関係性</h3>
+            <p>自分にも相手にも、柔らかな距離感を持ちたい人の入り口。</p>
+          </article>
+          <article class="theme-card reveal">
+            <span class="theme-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24"><path d="M5 17l6-7 4 4 4-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="theme-label">Resilience</span>
+            <h3>守り・自信・再起</h3>
+            <p>揺れやすい時期に、自分の輪郭を取り戻したい人の入り口。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="collection" class="section">
+      <div class="shell site-section-shell">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow" style="color: var(--gold);">Collection</p>
+            <h2>選ばれた石を<br>静かな商品体験へ</h2>
+            <p class="lead">商品グリッドを主役にせず、symbolic diagnosis の先に商品が現れる構成です。現段階では C001 系の visual を軸にしています。</p>
+          </div>
+        </div>
+
+        <div class="collection-grid">
+          <article class="product-card reveal">
+            <div class="product-image"><img src="../assets/ai-visuals/C001/2026-07-07/C001-ai-visual-v1-preview-crop.png" alt="Quiet Fortune bracelet visual"></div>
+            <div class="product-meta">
+              <strong>Quiet Fortune</strong>
+              <span>Yellow Citrine · 仕事 / 集中</span>
+              <span class="price">¥12,800</span>
+            </div>
+          </article>
+          <article class="product-card reveal">
+            <div class="product-image"><img src="../assets/ai-visuals/C001/2026-07-07/C001-ai-visual-v2-preview-crop.png" alt="Soft Focus bracelet visual"></div>
+            <div class="product-meta">
+              <strong>Soft Focus</strong>
+              <span>Yellow Citrine · 静けさ / 調律</span>
+              <span class="price">¥12,800</span>
+            </div>
+          </article>
+          <article class="product-card reveal">
+            <div class="product-image"><img src="../assets/ai-visuals/C001/2026-07-07/C001-ai-visual-v3-preview-crop.png" alt="Golden Presence bracelet visual"></div>
+            <div class="product-meta">
+              <strong>Golden Presence</strong>
+              <span>Yellow Citrine · 豊かさ / 存在感</span>
+              <span class="price">¥12,800</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="diagnosis" class="section">
+      <div class="shell site-section-shell">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow" style="color: var(--gold);">Symbol Map</p>
+            <h2>診断は答えを断言せず<br>意味の地図を返す</h2>
+            <p class="lead">ここでいう「地图」は地理ではなく、いまの気分・願い・象徴性をつなぐ map です。商品を押しつけず、意味の位置関係を見せる設計にしています。</p>
+          </div>
+        </div>
+
+        <div class="map-grid">
+          <article class="map-panel reveal">
+            <div class="map-constellation">
+              <svg class="constellation-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M20 20C35 26 40 44 32 56C42 50 58 42 68 22C78 30 76 54 60 60C48 66 44 76 44 84" fill="none" stroke="rgba(167,122,52,0.26)" stroke-width="1.4" stroke-dasharray="3 5"/>
+              </svg>
+              <div class="node">
+                <span class="node-badge">
+                  <svg width="18" height="18" viewBox="0 0 20 20"><path d="M10 2l2.3 5.7L18 10l-5.7 2.3L10 18l-2.3-5.7L2 10l5.7-2.3z" fill="currentColor"/></svg>
+                </span>
+                <span>Purpose</span>
+              </div>
+              <div class="node">
+                <span class="node-badge">
+                  <svg width="18" height="18" viewBox="0 0 20 20"><path d="M10 3C7 6.9 5 9.7 5 12.6A5 5 0 0 0 15 12.6C15 9.7 13 6.9 10 3z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+                </span>
+                <span>Renewal</span>
+              </div>
+              <div class="node">
+                <span class="node-badge">
+                  <svg width="18" height="18" viewBox="0 0 20 20"><path d="M10 2l6 8-6 8-6-8z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+                </span>
+                <span>Wisdom</span>
+              </div>
+              <div class="node">
+                <span class="node-badge">
+                  <svg width="18" height="18" viewBox="0 0 20 20"><path d="M4 10h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="10" r="5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+                </span>
+                <span>Harmony</span>
+              </div>
+              <div class="node">
+                <span class="node-badge">
+                  <svg width="18" height="18" viewBox="0 0 20 20"><circle cx="10" cy="10" r="1.8" fill="currentColor"/><circle cx="10" cy="10" r="6.6" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+                </span>
+                <span>Center</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="capture-card reveal">
+            <div>
+              <p class="eyebrow" style="color: var(--gold); margin-bottom: 10px;">Opening Gift</p>
+              <h3 style="margin: 0 0 10px; font-size: 30px; line-height: 1.18;">診断を受け取って、<br>静かな一本へ進む</h3>
+              <p class="lead" style="margin-top: 0;">3つの質問に答えると、ORIA から今のテーマに近い stone direction と symbol meaning を返します。初回ギフトはその後に受け取る流れです。</p>
+            </div>
+            <div class="map-notes">
+              <article>
+                <strong style="font-family: 'Hiragino Kaku Gothic ProN', 'Yu Gothic', system-ui, sans-serif; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;">Step 1</strong>
+                <p style="margin: 6px 0 0;">今のテーマをひとつ選ぶ</p>
+              </article>
+              <article>
+                <strong style="font-family: 'Hiragino Kaku Gothic ProN', 'Yu Gothic', system-ui, sans-serif; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;">Step 2</strong>
+                <p style="margin: 6px 0 0;">AI が symbol meaning と stone direction を返す</p>
+              </article>
+              <article>
+                <strong style="font-family: 'Hiragino Kaku Gothic ProN', 'Yu Gothic', system-ui, sans-serif; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;">Step 3</strong>
+                <p style="margin: 6px 0 0;">メールまたは LINE で opening gift を受け取る</p>
+              </article>
+            </div>
+            <div class="capture-row">
+              <input type="email" placeholder="email または LINE を入力">
+              <button class="btn gold" type="button">Gift を受け取る</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <footer class="shell site-section-shell footer">
+      <div>
+        <span class="footer-brand">ORIA</span>
+        <div>静かな診断から、意味のある一本へ。日本語を基準にしつつ、英語導線にも拡張可能な prototype route を想定。</div>
+      </div>
+      <div class="footer-links">
+        <a href="#diagnosis">Diagnosis</a>
+        <a href="#collection">Collection</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!reduceMotion) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+          }
+        });
+      }, { threshold: 0.16 });
+
+      document.querySelectorAll(".reveal").forEach((node, index) => {
+        node.style.transitionDelay = `${Math.min(index * 60, 320)}ms`;
+        observer.observe(node);
+      });
+
+      const hero = document.querySelector("[data-parallax='hero']");
+      const onScroll = () => {
+        const y = window.scrollY * 0.08;
+        hero.style.backgroundPosition = `center calc(50% + ${y}px)`;
+      };
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+    } else {
+      document.querySelectorAll(".reveal").forEach((node) => node.classList.add("is-visible"));
+    }
+  </script>
+</body>
+</html>
